@@ -4,3 +4,4 @@ go.sum
 appconfig.toml
 build
 pkg/ws
+pkg/webcore_features/auth
