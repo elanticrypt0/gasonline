@@ -25,8 +25,17 @@ los archivos publicos están dentro de la carpeta public y por defecto tienen va
 
 # Astro + Svelte
 
-En la carpeta _wui_ se encuentran los archivos para realizar la interfaz gráfica. Allí se puede trabajar en modo desarrollo, una vez terminado se puede compilar con el comando
+Para la creación del front-end, wui (Web User Interface). En linux ejecutar el script *create_wui.sh*
+
+Esto crea una carpeta _wui_, allí se encuentran los archivos para realizar la interfaz gráfica. Allí se puede trabajar en modo desarrollo, una vez terminado se puede compilar con el comando
 
     npm run astro build
 
-y el resultado será puesto en la carpeta _./public_
+# Generar un build
+
+Para generar un build se debe ejecutar el script _build.sh_ eso hará varias cosas:
+
+1- Borrá la carpeta _build_ si está creada.
+2- Creará los binarios para windows y linux
+3- Copiará la carpeta generada por el _wui_
+4- copiará los archivos de configuración
