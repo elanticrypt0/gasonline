@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/elanticrypt0/gasonline/api/routes"
@@ -9,8 +8,6 @@ import (
 	"github.com/elanticrypt0/gasonline/pkg/webcore_features"
 	"github.com/elanticrypt0/go4it"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 func main() {
@@ -29,37 +26,34 @@ func main() {
 			StrictRouting: true,
 			ServerHeader:  "Fiber",
 			AppName:       app_config.Config.App_name,
+			// access
+			DisableStartupMessage: false,
+			PassLocalsToViews:     true,
 		}),
 	}
 
-	// CORS
-	// necesario para poder utilizar la WUI
-	gas.Fiber.Use(cors.New())
-	gas.Fiber.Use(cors.New(cors.Config{
-		AllowOrigins: gas.App.Config.App_CORS_origins,
-		AllowHeaders: gas.App.Config.App_CORS_headers,
-	}))
-
-	gas.Fiber.Use(recover.New())
+	webcore.MiddlewareSetup(&gas)
 
 	gas.PrintAppInfo()
 
+	// Routes setup
+
 	// features routes
-	routes.SetupFeaturesRoutes(&gas)
-	// webcore features
-	webcore_features.SetupRoutes(&gas)
+	routes.SetupApiRoutes(&gas)
+
+	// webcore setup routes
+	if gas.App.Config.App_setup_enabled {
+		// webcore features setup
+		webcore_features.SetupRoutes(&gas)
+
+		webcore_features.SetupOnStartup(&gas)
+	}
 	// static routes
 	webcore.SetupStaticRoutes(gas.Fiber)
 
-	// siempre se migran las tablas cuando comienza la app
-	if gas.App.Config.App_debug_mode && gas.App.Config.App_setup_enabled {
-		fmt.Println("\nMigrando las bases de datos...")
-		webcore_features.SetupOnStartup(&gas)
-	}
-
 	portAsStr := gas.GetPortAsStr()
 
-	go4it.OpenInBrowser("http://" + gas.GetAppUrl())
+	// go4it.OpenInBrowser("http://" + gas.GetAppUrl())
 
 	log.Fatal(gas.Fiber.Listen(gas.GetAppUrl()), "Server is running on port "+portAsStr)
 

@@ -8,6 +8,7 @@ GOOS=linux GOARCH=amd64 go build -ldflags "-w -s"
 rm -rf ./build
 mkdir ./build
 mkdir ./build/_db
+mkdir ./build/_logs
 mkdir ./build/public
 
 # add execution perms
