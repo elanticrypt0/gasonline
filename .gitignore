@@ -1,0 +1,6 @@
+_db
+wui
+go.sum
+appconfig.toml
+build
+pkg/ws
