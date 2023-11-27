@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 // Authentication factors
 
-type AuthFactor struct {
+type AccessFactor struct {
 	gorm.Model
 	Email       bool
 	Phone       bool

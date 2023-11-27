@@ -1,7 +1,7 @@
 _db
 wui
 go.sum
+go.mod
 appconfig.toml
 build
 pkg/ws
-pkg/webcore_features/auth

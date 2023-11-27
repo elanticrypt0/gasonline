@@ -9,6 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+const seedDir = "./seeds/"
+
 func Seed(c *fiber.Ctx, gas *webcore.GasonlineApp) error {
 	seedCategories(gas)
 	return c.JSON("OK")
@@ -16,7 +18,7 @@ func Seed(c *fiber.Ctx, gas *webcore.GasonlineApp) error {
 
 func seedCategories(gas *webcore.GasonlineApp) {
 	cat_list := []models.Category{}
-	go4it.ReadAndParseJson("categories", &cat_list)
+	go4it.ReadAndParseJson(seedDir+"categories", &cat_list)
 	// for _, category := range cat_list {
 	// 	models.CreateCategory(gas, category.Name)
 	// }

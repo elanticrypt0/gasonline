@@ -12,42 +12,40 @@ import (
 
 func main() {
 
-	app_config := go4it.NewApp("./appconfig")
+	app_config := go4it.NewApp("./config/appconfig")
+
+	gas := webcore.GasonlineApp{
+		App: &app_config,
+		Fiber: fiber.New(fiber.Config{
+			Prefork:               false,
+			CaseSensitive:         true,
+			StrictRouting:         true,
+			ServerHeader:          "Fiber",
+			AppName:               app_config.Config.App_name,
+			DisableStartupMessage: false,
+			PassLocalsToViews:     true,
+		}),
+	}
+	gas.PrintAppInfo()
 
 	// make the connection
 	app_config.Connect2Db("local")
 	app_config.DB.SetPrimaryDB(0)
 
-	gas := webcore.GasonlineApp{
-		App: &app_config,
-		Fiber: fiber.New(fiber.Config{
-			Prefork:       false,
-			CaseSensitive: true,
-			StrictRouting: true,
-			ServerHeader:  "Fiber",
-			AppName:       app_config.Config.App_name,
-			// access
-			DisableStartupMessage: false,
-			PassLocalsToViews:     true,
-		}),
-	}
-
+	// middleware
 	webcore.MiddlewareSetup(&gas)
 
-	gas.PrintAppInfo()
-
 	// Routes setup
+
+	// webcore setup routes
+	if gas.App.Config.App_setup_enabled {
+		webcore_features.SetupRoutes(&gas)
+		webcore_features.SetupOnStartup(&gas)
+	}
 
 	// features routes
 	routes.SetupApiRoutes(&gas)
 
-	// webcore setup routes
-	if gas.App.Config.App_setup_enabled {
-		// webcore features setup
-		webcore_features.SetupRoutes(&gas)
-
-		webcore_features.SetupOnStartup(&gas)
-	}
 	// static routes
 	webcore.SetupStaticRoutes(gas.Fiber)
 

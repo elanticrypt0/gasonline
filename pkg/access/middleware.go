@@ -15,5 +15,6 @@ func AccessWithAuthenticatedUser(c *fiber.Ctx) error {
 
 	// c.Locals(localUserKey,)
 	fmt.Println("This is called")
+	fmt.Println("-> log users actions")
 	return c.Next()
 }

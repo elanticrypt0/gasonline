@@ -1,6 +1,7 @@
 package webcore_features
 
 import (
+	"github.com/elanticrypt0/gasonline/pkg/access"
 	"github.com/elanticrypt0/gasonline/pkg/webcore"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
@@ -32,4 +33,41 @@ func SetupRoutes(gas *webcore.GasonlineApp) {
 			return Seed(c, gas)
 		})
 	}
+
+	// access pkg
+	var accessConfig access.AccessConfig
+	access.LoadConfig(&accessConfig)
+	if accessConfig.IsEnabled {
+		AccessRoutesSetup(gas)
+	}
+
+}
+
+func AccessRoutesSetup(gas *webcore.GasonlineApp) {
+	access := gas.Fiber.Group("/auth")
+
+	access.Get("/login", func(c *fiber.Ctx) error {
+		// todo
+		return c.SendString("login")
+	})
+
+	access.Get("/logout", func(c *fiber.Ctx) error {
+		// todo
+		return c.SendString("logout")
+	})
+
+	access.Post("/create", func(c *fiber.Ctx) error {
+		// todo
+		return c.SendString("Create")
+	})
+
+	access.Put("/update", func(c *fiber.Ctx) error {
+		// todo
+		return c.SendString("update")
+	})
+
+	access.Get("/delete", func(c *fiber.Ctx) error {
+		// todo
+		return c.SendString("delete")
+	})
 }

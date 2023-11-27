@@ -1,7 +1,7 @@
 package webcore
 
 import (
-	"github.com/elanticrypt0/gasonline/pkg/webcore_features/access"
+	"github.com/elanticrypt0/gasonline/pkg/access"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
